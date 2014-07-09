@@ -647,18 +647,22 @@ end
 ##
 ## Main Loop
 ##
-filenames, prefs = nil
-begin
-  args_handler = ArgumentsHandler.new
-  filenames, prefs = args_handler.handle_args ARGV
-rescue StandardError => e
-  puts "=== ERROR IN ARGUMENTS PARSING ==="
-  puts e.message
-  puts e.backtrace.inspect
+filenames = []
+prefs = nil
+
+if __FILE__==$0
+  begin
+    args_handler = ArgumentsHandler.new
+    filenames, prefs = args_handler.handle_args ARGV
+  rescue StandardError => e
+    puts "=== ERROR IN ARGUMENTS PARSING ==="
+    puts e.message
+    puts e.backtrace.inspect
+  end
+  puts "filenames   = #{filenames}"
+  puts "preferences =\n#{(prefs.map {|k,v| "  #{k}: #{v}" if v}).compact.join(",\n")}"
+  puts
 end
-puts "filenames   = #{filenames}"
-puts "preferences =\n#{(prefs.map {|k,v| "  #{k}: #{v}" if v}).compact.join(",\n")}"
-puts
 filenames.each do |filename|
   puts "begin processing #{filename}"
   begin
